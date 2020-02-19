@@ -46,11 +46,12 @@ def set_password():
 	else:
 		update_etc_shadow("uclamii")
 		# user created with default password -> "uclamii"
-		subprocess.call('sudo chage -d 0 %s'% user_name, shell=True)
+		
 
 
 def set_quota():
-	subprocess.call('sudo setquota -u %s 950G 1T 0 0 /' % user_name, shell=True)
+	subprocess.call('sudo setquota -u %s 1G 1G 0 0 /dev/sda2' % user_name, shell=True)
+	subprocess.call('sudo setquota -u %s 950G 1T 0 0 /dev/sdb1' % user_name, shell=True)
 
 
 def check_group():
@@ -155,7 +156,7 @@ def main():
 		check_user()
 		check_group()
 		set_password()
-		set_quota()
+
 		if args.shell == 'NO':
 			if args.folder == 'NO':
 				home_dir = '/'
@@ -171,6 +172,8 @@ def main():
 				home_dir = mk_home_dir(user_name)
 				update_etc_passwd(home_dir,shell_value='/bin/bash')
 		update_etc_group()
+		set_quota()
+		subprocess.call('sudo chage -d 0 %s'% user_name, shell=True)
 	else:
 		delete_user()
 
