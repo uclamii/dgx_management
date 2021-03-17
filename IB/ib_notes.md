@@ -20,10 +20,11 @@ echo "rdma 20049" | sudo tee /proc/fs/nfsd/portlist
 ```
 dd of=/raid/jiayunli/data/tempt if=/raid/jiayunli/data/storage_slides/finished_011619/11223.svs bs=1000M count=1024 oflag=direct
 listCard 
-
+```
 - More information may be found [here](https://docs.google.com/document/d/14BfhDKKwjJkztUdh5guTjcPpxoFoRZfK4Yw1Rk9bM7w/edit?usp=sharing)
 
-## SetUp drivers<a name="setupdriver"></a>.  
+
+## SetUp drivers<a name="setupdriver"></a>  
 - Verify that cards are installed correctly and are recognized by the system
 ```
 lspci | grep -i mellanox
