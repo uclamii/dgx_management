@@ -1,7 +1,28 @@
 There is one IB card with two ports on deepstorage, and four IB cards, each of which has one port on dgx. 
 
 [Set up drivers](#setupdriver) [Config network interface](#config_network) need to be done for both servers. 
-For [NFS over IB](#nfs_over_ib), different steps are required for server (deepstorage) and client (dgx).
+For [NFS over IB](#nfs_over_ib), different steps are required for server (deepstorage) and client (dgx).  
+
+## Common steps to solve IB issues
+- Check the status of IB connection
+
+```
+ibstat
+```
+- Make sure the "rdma 20049" port is added in `/proc/fs/nfsd/portlist`. The "rdma 20049" might be removed after deepstorage reboot, after NFS server restart, ...
+This may stop the IB from working, and is the most commonly encountered issue for me.   
+```
+# Perform this on deepstorage!
+echo "rdma 20049" | sudo tee /proc/fs/nfsd/portlist
+```
+
+- Test data transform
+```
+dd of=/raid/jiayunli/data/tempt if=/raid/jiayunli/data/storage_slides/finished_011619/11223.svs bs=1000M count=1024 oflag=direct
+listCard 
+
+- More information may be found [here](https://docs.google.com/document/d/14BfhDKKwjJkztUdh5guTjcPpxoFoRZfK4Yw1Rk9bM7w/edit?usp=sharing)
+
 ## SetUp drivers<a name="setupdriver"></a>.  
 - Verify that cards are installed correctly and are recognized by the system
 ```
